@@ -14,17 +14,27 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Basic route
+// Import routes
+const userRoutes = require('./routes/userRoutes');
+app.use('/user', userRoutes);
+
+
+// Root route
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-// MongoDB Connection
+// Connect to MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(() => console.log('MongoDB connected 🥭'))
   .catch((err) => console.error('MongoDB connection failed:', err));
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT} 🥭`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT} 🥭`);
+});
