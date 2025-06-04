@@ -18,7 +18,6 @@ app.use(morgan('dev'));
 const userRoutes = require('./routes/userRoutes');
 app.use('/user', userRoutes);
 
-
 // Root route
 app.get('/', (req, res) => {
   res.send('API is running...');
