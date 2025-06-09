@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("delete/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const deleted = await User.findByIdAndDelete(req.params.id);
     if (!deleted) {
@@ -34,7 +34,7 @@ router.delete("delete/:id", async (req, res) => {
   }
 });
 
-router.put("/update/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
@@ -49,6 +49,25 @@ router.put("/update/:id", async (req, res) => {
     res.json(updatedUser);
   } catch (error) {
     res.status(400).json({ error: "Failed to update user." });
+  }
+});
+
+router.put("/:id/make-admin", async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { isAdmin: true },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    res.json(updatedUser);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to promote user." });
   }
 });
 
